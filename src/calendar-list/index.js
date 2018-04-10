@@ -13,7 +13,7 @@ import styleConstructor from './style';
 import dateutils from '../dateutils';
 import Calendar from '../calendar';
 
-const calendarHeight = 360;
+const calendarHeight = 320; // Leo: 原高度360
 class CalendarList extends Component {
   static propTypes = {
     ...Calendar.propTypes,
@@ -46,12 +46,15 @@ class CalendarList extends Component {
       rows.push(text);
       texts.push(text);
     }
+
+    // Leo: 初始化值
     rows[this.pastScrollRange] = date;
-    rows[this.pastScrollRange + 1] = date.clone().addMonths(1, true);
-    if (this.pastScrollRange) {
-      rows[this.pastScrollRange - 1] = date.clone().addMonths(-1, true);
-    } else {
-      rows[this.pastScrollRange + 2] = date.clone().addMonths(2, true);
+    if (this.pastScrollRange + this.futureScrollRange >= 1) {
+      if (this.pastScrollRange) {
+        rows[this.pastScrollRange - 1] = date.clone().addMonths(-1, true);
+      } else {
+        rows[this.pastScrollRange + 1] = date.clone().addMonths(1, true);
+      }
     }
     this.state = {
       rows,
@@ -82,6 +85,7 @@ class CalendarList extends Component {
           maxDate={this.props.maxDate}
           firstDay={this.props.firstDay}
           monthFormat={this.props.monthFormat}
+          renderDay={this.props.renderDay}
         />);
     } else {
       const text = row.toString();

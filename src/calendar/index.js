@@ -57,7 +57,9 @@ class Calendar extends Component {
     // Replace default arrows with custom ones (direction can be 'left' or 'right')
     renderArrow: PropTypes.func,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+    // Replace default DayComp with custom
+    renderDay: PropTypes.func
   };
 
   constructor(props) {
@@ -156,7 +158,7 @@ class Calendar extends Component {
         dayComp = (<View key={id} style={{width: 32}}/>);
       }
     } else {
-      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      const DayComp = this.props.markingType === 'interactive' ? UnitDay : this.props.renderDay || Day;
       const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
